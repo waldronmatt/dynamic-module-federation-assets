@@ -1,8 +1,14 @@
 (async () => {
+  console.log(`DEBUG LOGGING`);
+
   // environment context
   const environment = () => location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
 
   const getBasePath = environment() == 'localhost' ? './' : '/';
+  console.log(`Local chunk base path: ${getBasePath}`)
+
+  const getManifest = await fetch("./assets-manifest.json").then(response => response.json());
+  console.log(`Generated Manifest File: ${getManifest}`);
 
   const configs = [
     // environment context set by our build pipelines
@@ -31,7 +37,6 @@
   window.__MAP__ = map;
 
   // debugging
-  console.log(`DEBUG LOGGING`);
   console.log(`Current Environment: '${/* environment */ environment()}'`);
   console.log(`Current Public Path: '${map[chunks.entrypoints[0]][/* environment */ environment()].href}'`);
   console.log(`List of local entry points to use: [${chunks.entrypoints}]`);
@@ -41,9 +46,10 @@
   await Promise.all([
     // get entry points required for initializing this app
     ...chunks.entrypoints.map(chunk => {
-      const { href } = map[chunks.entrypoints[0]][/* environment */ environment()]
       console.log(`Getting '${chunk}' entry point`);
-      return fetch(`${href}/${chunk}.js`).then(response => response.text());
+      return chunk !== 'remoteEntry'
+        ? fetch(`./${getManifest[`${chunk}.js`]}`).then(response => response.text())
+        : fetch(`${chunk}.js`).then(response => response.text());
     }),
 
     // get the remotes we're consuming
