@@ -1,0 +1,18 @@
+{
+  "Host": {
+    "localhost": {
+      "href": "http://localhost:8000"
+    },
+    "production": {
+      "href": "https://dynamic-host-module-federation.netlify.app/"
+    }
+  },
+  "RemoteFormApp": {
+    "localhost": {
+      "href": "http://localhost:8001"
+    },
+    "production": {
+      "href": "https://dynamic-remote-module-federation.netlify.app/"
+    }
+  }
+}
