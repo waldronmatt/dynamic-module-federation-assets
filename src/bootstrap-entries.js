@@ -8,7 +8,8 @@
   console.log(`Local chunk base path: ${getBasePath}`)
 
   const getManifest = await fetch("./assets-manifest.json").then(response => response.json());
-  console.log(`Generated Manifest File: ${getManifest}`);
+  console.log('Generated Manifest File:');
+  console.log(getManifest);
 
   const configs = [
     // environment context set by our build pipelines
