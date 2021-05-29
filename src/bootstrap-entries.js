@@ -1,4 +1,9 @@
 (async () => {
+  // environment context
+  const environment = () => location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
+
+  const getBasePath = environment() == 'localhost' ? './' : '//';
+
   const configs = [
     // environment context set by our build pipelines
     // './environment.config.json',
@@ -10,11 +15,8 @@
       Note: if this is a remote app, include 'remoteEntry' for 'entrypoint'
       so the host can point to it and grab the remotes
     */
-    '//chunks.config.json',
+    `${getBasePath}chunks.config.json`,
   ];
-
-  // environment context
-  const environment = () => location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
 
   // get the configuration files in parallel
   const [/* { environment }, */ map, chunks, ] = await Promise.all(
@@ -40,7 +42,7 @@
     // get entry points required for initializing this app
     ...chunks.entrypoints.map(chunk => {
       console.log(`Getting '${chunk}' entry point`);
-      return fetch(`//${chunk}.js`).then(response => response.text());
+      return fetch(`${getBasePath}${chunk}.js`).then(response => response.text());
     }),
 
     // get the remotes we're consuming
