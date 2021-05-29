@@ -2,7 +2,7 @@
   // environment context
   const environment = () => location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
 
-  const getBasePath = environment() == 'localhost' ? './' : `${map[chunks.entrypoints[0]][/* environment */ environment()].href}`;
+  const getBasePath = environment() == 'localhost' ? './' : '/';
 
   const configs = [
     // environment context set by our build pipelines
