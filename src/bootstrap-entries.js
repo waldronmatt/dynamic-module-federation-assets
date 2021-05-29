@@ -10,7 +10,7 @@
       Note: if this is a remote app, include 'remoteEntry' for 'entrypoint'
       so the host can point to it and grab the remotes
     */
-    './chunks.config.json',
+    '//chunks.config.json',
   ];
 
   // environment context
