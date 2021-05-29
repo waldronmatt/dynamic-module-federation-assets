@@ -42,7 +42,7 @@
     // get entry points required for initializing this app
     ...chunks.entrypoints.map(chunk => {
       console.log(`Getting '${chunk}' entry point`);
-      return fetch(`${getBasePath}${chunk}.js`).then(response => response.text());
+      return fetch(`./${chunk}.js`).then(response => response.text());
     }),
 
     // get the remotes we're consuming
