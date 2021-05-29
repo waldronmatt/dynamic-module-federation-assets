@@ -7,7 +7,7 @@ Assets used by dynamic module federation repositories.
 **`index.html`**
 
 ```js
-<script src="https://unpkg.com/regenerator-runtime@0.13.1/runtime.js"></script>
+<script preload src="https://unpkg.com/regenerator-runtime@0.13.1/runtime.js"></script>
 <script preload src='https://cdn.jsdelivr.net/gh/waldronmatt/dynamic-module-federation-assets/dist/bootstrap-entries.js'></script>
 ```
 
