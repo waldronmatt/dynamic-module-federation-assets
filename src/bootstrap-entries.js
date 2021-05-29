@@ -41,8 +41,9 @@
   await Promise.all([
     // get entry points required for initializing this app
     ...chunks.entrypoints.map(chunk => {
+      const { href } = map[chunks.entrypoints[0]][/* environment */ environment()]
       console.log(`Getting '${chunk}' entry point`);
-      return fetch(`./${chunk}.js`).then(response => response.text());
+      return fetch(`${href}/${chunk}.js`).then(response => response.text());
     }),
 
     // get the remotes we're consuming
