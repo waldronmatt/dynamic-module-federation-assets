@@ -2,12 +2,15 @@
   console.log(`DEBUG LOGGING`);
 
   // environment context
-  const environment = () => location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
+  const environment = () =>
+    location.host.indexOf('localhost') > -1 ? 'localhost' : 'production';
 
   const getBasePath = environment() == 'localhost' ? './' : '/';
-  console.log(`Local chunk base path: ${getBasePath}`)
+  console.log(`Local chunk base path: ${getBasePath}`);
 
-  const getManifest = await fetch("./assets-manifest.json").then(response => response.json());
+  const getManifest = await fetch('./assets-manifest.json').then(response =>
+    response.json()
+  );
   console.log('Generated Manifest File:');
   console.log(getManifest);
 
@@ -26,7 +29,7 @@
   ];
 
   // get the configuration files in parallel
-  const [/* { environment }, */ map, chunks, ] = await Promise.all(
+  const [/* { environment }, */ map, chunks] = await Promise.all(
     configs.map(config => fetch(config).then(response => response.json()))
   );
 
@@ -39,7 +42,11 @@
 
   // debugging
   console.log(`Current Environment: '${/* environment */ environment()}'`);
-  console.log(`Current Public Path: '${map[chunks.entrypoints[0]][/* environment */ environment()].href}'`);
+  console.log(
+    `Current Public Path: '${
+      map[chunks.entrypoints[0]][/* environment */ environment()].href
+    }'`
+  );
   console.log(`List of local entry points to use: [${chunks.entrypoints}]`);
   console.log(`List of remote apps to use: [${chunks.remotes}]`);
 
@@ -49,14 +56,20 @@
     ...chunks.entrypoints.map(chunk => {
       console.log(`Getting '${chunk}' entry point`);
       return chunk !== 'remoteEntry'
-        ? fetch(`./${getManifest[`${chunk}.js`]}`).then(response => response.text())
+        ? fetch(`./${getManifest[`${chunk}.js`]}`).then(response =>
+            response.text()
+          )
         : fetch(`${chunk}.js`).then(response => response.text());
     }),
 
     // get the remotes we're consuming
     ...chunks.remotes.map(chunk => {
       const { href } = map[chunk][/* environment */ environment()];
-      console.log( `Remote '${chunk}' address for environment '${/* environment */ environment()}' is: ${href}/remoteEntry.js`);
+      console.log(
+        `Remote '${chunk}' address for environment '${
+          /* environment */ environment()
+        }' is: ${href}/remoteEntry.js`
+      );
       return fetch(`${href}/remoteEntry.js`).then(response => response.text());
     }),
   ])
